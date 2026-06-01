@@ -258,13 +258,12 @@ function App() {
               Windows desktop app
             </div>
             <h1>
-              A cleaner desktop app
+              A live interview copilot
               <br />
-              for live interview support
+              built for Windows
             </h1>
             <p className="hero-subtitle">
-              Composure listens in real time and surfaces exactly what you need, so you can focus on delivering, not scrambling. Download the app, explore the workspace, and choose a plan when you are ready to move
-              into payment.
+              Composure helps you stay calm, structured, and ready during interviews with real-time guidance, audio capture, and a focused desktop workspace.
             </p>
 
             <div className="hero-actions">
@@ -277,42 +276,64 @@ function App() {
             </div>
 
             <p className="hero-caption">
-              Download first to get the app. Choose a plan when you want to continue with payment.
+              Start with the free download, then choose Free, Pro, or Premium when you want account access.
             </p>
+
+            <div className="hero-pills" aria-label="Product highlights">
+              <span>Real-time guidance</span>
+              <span>Audio + screen capture</span>
+              <span>Free to start</span>
+              <span>Monthly Pro or Lifetime Premium</span>
+            </div>
           </div>
 
-          <div className="hero-terminal" data-reveal>
-            <div className="terminal-header">
-              <span className="terminal-dot terminal-dot-red" />
-              <span className="terminal-dot terminal-dot-amber" />
-              <span className="terminal-dot terminal-dot-green" />
-              <span className="terminal-label">DESKTOP SESSION</span>
+          <div className="hero-preview preview-panel" data-reveal>
+            <div className="preview-copy">
+              <p className="preview-label">Product preview</p>
+              <h3>Everything stays organized while you focus on the answer.</h3>
+              <p>
+                A clean desktop workspace surfaces the current prompt, keeps your response structure visible, and makes the next step obvious.
+              </p>
+
+              <ul className="preview-points">
+                <li>Capture the question from screen or audio.</li>
+                <li>Get a structured response draft in real time.</li>
+                <li>Stay focused with a compact, distraction-free layout.</li>
+              </ul>
             </div>
-            <div className="terminal-body">
-              <div className="terminal-row">
-                <div className="terminal-tag terminal-tag-muted">Prompt</div>
-                <div className="terminal-message terminal-message-muted">
-                  "Explain your approach to a high-traffic caching system in a concise way."
+
+            <div className="preview-window">
+              <div className="preview-window-top" aria-hidden="true">
+                <span />
+                <span />
+                <span />
+              </div>
+              <div className="preview-window-body">
+                <div className="preview-sidebar">
+                  <div className="preview-sidebar-card is-active">Live prompt</div>
+                  <div className="preview-sidebar-card">Structure</div>
+                  <div className="preview-sidebar-card">Follow-up notes</div>
+                  <div className="preview-sidebar-card">Plan: Pro</div>
+                </div>
+
+                <div className="preview-main">
+                  <div className="preview-main-card">
+                    <span className="preview-card-label">Current question</span>
+                    <p>How would you design a caching layer for a high-traffic platform?</p>
+                  </div>
+                  <div className="preview-main-card is-accent">
+                    <span className="preview-card-label">Suggested answer</span>
+                    <p>
+                      Start with the architecture, then cover cache placement, invalidation strategy, and how you would protect the system from traffic spikes.
+                    </p>
+                  </div>
+                  <div className="preview-inline-stats">
+                    <div>0.8s response time</div>
+                    <div>Audio + screen</div>
+                    <div>Private workspace</div>
+                  </div>
                 </div>
               </div>
-              <div className="terminal-row">
-                <div className="terminal-tag terminal-tag-accent">Structured draft</div>
-                <div className="terminal-message terminal-message-accent">
-                  <strong>Start with the architecture and tradeoffs first.</strong> Mention cache
-                  placement, invalidation strategy, consistency model, and how you would protect the
-                  system from thundering-herd traffic spikes.
-                  <span className="typing-dots" aria-hidden="true">
-                    <span />
-                    <span />
-                    <span />
-                  </span>
-                </div>
-              </div>
-            </div>
-            <div className="terminal-footer">
-              <span className="status-pill">Desktop workspace</span>
-              <span className="status-pill">Audio + screen input</span>
-              <span className="status-pill">Plan-based access</span>
             </div>
           </div>
         </section>
