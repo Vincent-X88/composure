@@ -118,7 +118,7 @@ npm run build
 Run Edge Function type-checks with Deno:
 
 ```powershell
-$env:DENO_DIR = "$PWD\.deno-cache"
+$env:DENO_DIR = "$PWD\\.deno-cache"
 deno check supabase/functions/create-checkout-session/index.ts supabase/functions/create-customer-portal/index.ts supabase/functions/paystack-webhook/index.ts
 ```
 
