@@ -2,3 +2,4 @@ node_modules/
 dist/
 .deno-cache/
 .env
+supabase/.temp/
