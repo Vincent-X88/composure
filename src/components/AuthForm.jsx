@@ -144,25 +144,11 @@ export function AuthForm({ planName, mode = 'signup', onSuccess }) {
             <button
               type="button"
               className="button button-secondary"
-              onClick={() => {
-                setAuthMode('signin');
-                setPendingVerification(false);
-                setMessage('');
-              }}
-            >
-              Go to sign in
-            </button>
-            <button
-              type="button"
-              className="button button-secondary"
               disabled={isResendingVerification}
               onClick={handleResendVerification}
             >
               {isResendingVerification ? 'Sending...' : 'Resend verification email'}
             </button>
-            <a className="button button-primary" href={`mailto:${email}`}>
-              Open email app
-            </a>
           </div>
         </div>
       ) : null}
