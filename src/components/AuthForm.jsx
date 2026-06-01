@@ -30,12 +30,15 @@ export function AuthForm({ planName, mode = 'signup', onSuccess }) {
   const [password, setPassword] = useState('');
   const [message, setMessage] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isResendingVerification, setIsResendingVerification] = useState(false);
+  const [pendingVerification, setPendingVerification] = useState(false);
 
   const isSignup = authMode === 'signup';
 
   async function handleSubmit(event) {
     event.preventDefault();
     setMessage('');
+    setPendingVerification(false);
 
     if (!isSupabaseConfigured) {
       setMessage('Account setup is not available right now. Please try again shortly.');
@@ -61,6 +64,7 @@ export function AuthForm({ planName, mode = 'signup', onSuccess }) {
     }
 
     if (isSignup && !response.data.session) {
+      setPendingVerification(true);
       setMessage('Check your email to confirm your account, then come back to continue.');
       return;
     }
@@ -71,6 +75,7 @@ export function AuthForm({ planName, mode = 'signup', onSuccess }) {
 
   async function handleGoogleAuth() {
     setMessage('');
+    setPendingVerification(false);
 
     if (!isSupabaseConfigured) {
       setMessage('Account setup is not available right now. Please try again shortly.');
@@ -91,6 +96,38 @@ export function AuthForm({ planName, mode = 'signup', onSuccess }) {
       setIsSubmitting(false);
       setMessage(error.message);
     }
+  }
+
+  async function handleResendVerification() {
+    setMessage('');
+
+    if (!isSupabaseConfigured) {
+      setMessage('Account setup is not available right now. Please try again shortly.');
+      return;
+    }
+
+    if (!email) {
+      setMessage('Enter the email address you used for sign up first.');
+      return;
+    }
+
+    setIsResendingVerification(true);
+
+    const redirectTo = `${window.location.origin}${window.location.pathname}${window.location.search}`;
+    const { error } = await supabase.auth.resend({
+      type: 'signup',
+      email,
+      options: { emailRedirectTo: redirectTo },
+    });
+
+    setIsResendingVerification(false);
+
+    if (error) {
+      setMessage(error.message);
+      return;
+    }
+
+    setMessage('We sent another confirmation email. Please check your inbox and spam folder.');
   }
 
   return (
@@ -163,6 +200,41 @@ export function AuthForm({ planName, mode = 'signup', onSuccess }) {
         {isSubmitting ? null : <GoogleIcon />}
         <span>{isSubmitting ? 'Working...' : 'Continue with Google'}</span>
       </button>
+
+      {pendingVerification ? (
+        <div className="auth-confirmation">
+          <p className="section-eyebrow">Check your inbox</p>
+          <h3>Confirm your email to finish setting up your account</h3>
+          <p>
+            We sent a verification link to <strong>{email}</strong>. Open that email, click the link,
+            and then come back here to sign in.
+          </p>
+          <div className="auth-confirmation-actions">
+            <button
+              type="button"
+              className="button button-secondary"
+              onClick={() => {
+                setAuthMode('signin');
+                setPendingVerification(false);
+                setMessage('');
+              }}
+            >
+              Go to sign in
+            </button>
+            <button
+              type="button"
+              className="button button-secondary"
+              disabled={isResendingVerification}
+              onClick={handleResendVerification}
+            >
+              {isResendingVerification ? 'Sending...' : 'Resend verification email'}
+            </button>
+            <a className="button button-primary" href={`mailto:${email}`}>
+              Open email app
+            </a>
+          </div>
+        </div>
+      ) : null}
 
       {message ? <p className="auth-message">{message}</p> : null}
     </div>
