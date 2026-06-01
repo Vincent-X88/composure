@@ -228,4 +228,11 @@ export const footerColumns = [
       { label: 'Continue to Payment', href: '?view=checkout&plan=pro' },
     ],
   },
+  {
+    title: 'Legal',
+    links: [
+      { label: 'Terms of Service', href: '?view=terms' },
+      { label: 'Privacy Policy', href: '?view=privacy' },
+    ],
+  },
 ];

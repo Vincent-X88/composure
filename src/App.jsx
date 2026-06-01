@@ -9,9 +9,11 @@ import { CheckoutPage } from './components/CheckoutPage';
 import { AuthPage } from './components/AuthPage';
 import { CheckoutSuccessPage } from './components/CheckoutSuccessPage';
 import { AccountPage } from './components/AccountPage';
+import { LegalPage } from './components/LegalPage';
 import { isSupabaseConfigured, supabase } from './lib/supabase';
 import { loadPricingPlans } from './lib/pricing';
 import { ensureCurrentSubscriptionRow, loadCurrentSubscription } from './lib/account';
+import { privacyContent, termsContent } from './data/legalContent';
 import {
   downloadUrl,
   faqItems,
@@ -213,6 +215,22 @@ function App() {
           downloadUrl={downloadUrl}
           onSignOut={handleSignOut}
         />
+      </div>
+    );
+  }
+
+  if (currentView === 'terms') {
+    return (
+      <div className="site-shell">
+        <LegalPage {...termsContent} />
+      </div>
+    );
+  }
+
+  if (currentView === 'privacy') {
+    return (
+      <div className="site-shell">
+        <LegalPage {...privacyContent} />
       </div>
     );
   }
