@@ -1516,10 +1516,22 @@ img {
   background: rgba(0, 255, 156, 0.05);
 }
 
+.auth-confirmation--hero {
+  margin-top: 0;
+  margin-bottom: 1rem;
+  padding: 1.15rem 1.2rem;
+  border-color: rgba(0, 255, 156, 0.18);
+  background:
+    radial-gradient(circle at top right, rgba(0, 255, 156, 0.12), transparent 34%),
+    rgba(0, 255, 156, 0.06);
+  box-shadow: 0 16px 40px rgba(0, 255, 156, 0.08);
+}
+
 .auth-confirmation h3 {
   margin: 0.1rem 0 0.5rem;
   font-family: 'Space Grotesk', 'Inter', sans-serif;
   letter-spacing: -0.04em;
+  font-size: 1.1rem;
 }
 
 .auth-confirmation p {

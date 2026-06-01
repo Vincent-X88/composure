@@ -65,7 +65,7 @@ export function AuthForm({ planName, mode = 'signup', onSuccess }) {
 
     if (isSignup && !response.data.session) {
       setPendingVerification(true);
-      setMessage('Check your email to confirm your account, then come back to continue.');
+      setMessage('');
       return;
     }
 
@@ -132,6 +132,41 @@ export function AuthForm({ planName, mode = 'signup', onSuccess }) {
 
   return (
     <div className="auth-panel">
+      {pendingVerification ? (
+        <div className="auth-confirmation auth-confirmation--hero" role="status" aria-live="polite">
+          <p className="section-eyebrow">Check your inbox</p>
+          <h3>We sent a confirmation email to {email || 'your inbox'}</h3>
+          <p>
+            Open the email, click the verification link, and then come back here to sign in. If you
+            don’t see it, check spam or resend it below.
+          </p>
+          <div className="auth-confirmation-actions">
+            <button
+              type="button"
+              className="button button-secondary"
+              onClick={() => {
+                setAuthMode('signin');
+                setPendingVerification(false);
+                setMessage('');
+              }}
+            >
+              Go to sign in
+            </button>
+            <button
+              type="button"
+              className="button button-secondary"
+              disabled={isResendingVerification}
+              onClick={handleResendVerification}
+            >
+              {isResendingVerification ? 'Sending...' : 'Resend verification email'}
+            </button>
+            <a className="button button-primary" href={`mailto:${email}`}>
+              Open email app
+            </a>
+          </div>
+        </div>
+      ) : null}
+
       <div className="auth-tabs" aria-label="Account action">
         <button
           type="button"
@@ -200,41 +235,6 @@ export function AuthForm({ planName, mode = 'signup', onSuccess }) {
         {isSubmitting ? null : <GoogleIcon />}
         <span>{isSubmitting ? 'Working...' : 'Continue with Google'}</span>
       </button>
-
-      {pendingVerification ? (
-        <div className="auth-confirmation">
-          <p className="section-eyebrow">Check your inbox</p>
-          <h3>Confirm your email to finish setting up your account</h3>
-          <p>
-            We sent a verification link to <strong>{email}</strong>. Open that email, click the link,
-            and then come back here to sign in.
-          </p>
-          <div className="auth-confirmation-actions">
-            <button
-              type="button"
-              className="button button-secondary"
-              onClick={() => {
-                setAuthMode('signin');
-                setPendingVerification(false);
-                setMessage('');
-              }}
-            >
-              Go to sign in
-            </button>
-            <button
-              type="button"
-              className="button button-secondary"
-              disabled={isResendingVerification}
-              onClick={handleResendVerification}
-            >
-              {isResendingVerification ? 'Sending...' : 'Resend verification email'}
-            </button>
-            <a className="button button-primary" href={`mailto:${email}`}>
-              Open email app
-            </a>
-          </div>
-        </div>
-      ) : null}
 
       {message ? <p className="auth-message">{message}</p> : null}
     </div>
