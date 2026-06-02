@@ -3,3 +3,4 @@ dist/
 .deno-cache/
 .env
 supabase/.temp/
+lookalike_website/

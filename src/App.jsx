@@ -236,19 +236,19 @@ function App() {
   }
 
   return (
-    <div className="site-shell" id="top">
-        <Navbar
-          downloadUrl={downloadUrl}
-          links={navLinks}
-          isOpen={menuOpen}
-          isScrolled={status}
-          onToggle={() => setMenuOpen((current) => !current)}
-          onNavigate={() => setMenuOpen(false)}
-          session={session}
-          subscription={subscription}
-          authReady={authReady}
-          onSignOut={handleSignOut}
-        />
+    <div className="site-shell site-shell--home" id="top">
+      <Navbar
+        downloadUrl={downloadUrl}
+        links={navLinks}
+        isOpen={menuOpen}
+        isScrolled={status}
+        onToggle={() => setMenuOpen((current) => !current)}
+        onNavigate={() => setMenuOpen(false)}
+        session={session}
+        subscription={subscription}
+        authReady={authReady}
+        onSignOut={handleSignOut}
+      />
 
       <main>
         <section className="hero section-frame">
@@ -281,38 +281,97 @@ function App() {
             </p>
           </div>
 
-          <div className="hero-terminal" data-reveal>
-            <div className="terminal-header">
-              <span className="terminal-dot terminal-dot-red" />
-              <span className="terminal-dot terminal-dot-amber" />
-              <span className="terminal-dot terminal-dot-green" />
-              <span className="terminal-label">DESKTOP SESSION</span>
-            </div>
-            <div className="terminal-body">
-              <div className="terminal-row">
-                <div className="terminal-tag terminal-tag-muted">Prompt</div>
-                <div className="terminal-message terminal-message-muted">
-                  "Explain your approach to a high-traffic caching system in a concise way."
+          <div className="hero-preview" data-reveal>
+            <div className="hero-proof-card">
+              <div className="hero-proof-header">
+                <span className="hero-proof-title">Live proof</span>
+                <span className="hero-proof-chip">Private session</span>
+              </div>
+
+              <div className="hero-proof-note">
+                <span className="hero-proof-icon" aria-hidden="true">
+                  🔒
+                </span>
+                <p>Coaching stays on your screen. The app is built to stay quiet until you need it.</p>
+              </div>
+
+              <div className="hero-proof-image-frame">
+                <img
+                  className="hero-proof-image"
+                  src="/lookalike-proof.jpg"
+                  alt="A testimonial style interview message preview"
+                />
+              </div>
+
+              <div className="hero-proof-bubble hero-proof-bubble--incoming">
+                <p>
+                  Hey team! Got my dream job today. Composure kept me calm, structured, and ready
+                  for every round.
+                </p>
+                <span>4:49 AM</span>
+              </div>
+
+              <div className="hero-proof-footer">
+                <div className="hero-proof-logo" aria-hidden="true">
+                  <img src="/composure-mark.svg" alt="" />
+                </div>
+                <div>
+                  <strong>Composure</strong>
+                  <span>Live interview support for Windows</span>
                 </div>
               </div>
-              <div className="terminal-row">
-                <div className="terminal-tag terminal-tag-accent">Structured draft</div>
-                <div className="terminal-message terminal-message-accent">
-                  <strong>Start with the architecture and tradeoffs first.</strong> Mention cache
-                  placement, invalidation strategy, consistency model, and how you would protect the
-                  system from thundering-herd traffic spikes.
-                  <span className="typing-dots" aria-hidden="true">
-                    <span />
-                    <span />
-                    <span />
-                  </span>
+            </div>
+
+            <div className="hero-preview-grid">
+              <div className="preview-window preview-window--light">
+                <div className="preview-window-top" aria-hidden="true">
+                  <span />
+                  <span />
+                  <span />
+                </div>
+                <div className="preview-window-body">
+                  <div className="preview-sidebar">
+                    <div className="preview-sidebar-card is-active">Live prompt</div>
+                    <div className="preview-sidebar-card">Structure</div>
+                    <div className="preview-sidebar-card">Follow-up notes</div>
+                    <div className="preview-sidebar-card">Plan: Pro</div>
+                  </div>
+
+                  <div className="preview-main">
+                    <div className="preview-main-card preview-main-card--image">
+                      <img
+                        className="preview-main-image"
+                        src="/lookalike-systemdesign.png"
+                        alt="Composure desktop app preview"
+                      />
+                    </div>
+                    <div className="preview-main-card">
+                      <span className="preview-card-label">Current question</span>
+                      <p>How would you design a caching layer for a high-traffic platform?</p>
+                    </div>
+                    <div className="preview-main-card is-accent">
+                      <span className="preview-card-label">Suggested answer</span>
+                      <p>
+                        Start with the architecture, then cover cache placement, invalidation
+                        strategy, and how you would protect the system from traffic spikes.
+                      </p>
+                    </div>
+                    <div className="preview-inline-stats">
+                      <div>0.8s response time</div>
+                      <div>Audio + screen</div>
+                      <div>Private workspace</div>
+                    </div>
+                  </div>
                 </div>
               </div>
-            </div>
-            <div className="terminal-footer">
-              <span className="status-pill">Desktop workspace</span>
-              <span className="status-pill">Audio + screen input</span>
-              <span className="status-pill">Plan-based access</span>
+
+              <div className="hero-quote-card">
+                <p className="hero-quote-label">Why it works</p>
+                <h3>Clear enough to understand at a glance, practical enough to use in a live session.</h3>
+                <p>
+                  Composure keeps the page airy, the calls to action obvious, and the product story visible without feeling cluttered.
+                </p>
+              </div>
             </div>
           </div>
         </section>
