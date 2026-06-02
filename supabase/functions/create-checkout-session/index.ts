@@ -90,7 +90,7 @@ Deno.serve(async (request) => {
       return jsonResponse({ error: 'This plan is already active on your account.' }, 409);
     }
 
-    const siteUrl = Deno.env.get('SITE_URL') ?? (Deno.env.get('DENO_DEPLOYMENT_ID') ? 'https://composure.fikronix.co.za' : 'http://localhost:5173');
+    const siteUrl = 'https://composure.fikronix.co.za';
     const reference = `composure_${plan.id}_${crypto.randomUUID().replaceAll('-', '')}`;
     const metadata = {
       supabase_user_id: user.id,
