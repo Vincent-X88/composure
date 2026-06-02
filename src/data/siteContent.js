@@ -1,6 +1,9 @@
 export const navLinks = [
   { label: 'Features', href: '#features' },
+  { label: 'Proof', href: '#proof' },
   { label: 'How It Works', href: '#how-it-works' },
+  { label: 'Comparison', href: '#comparison' },
+  { label: 'Results', href: '#offers' },
   { label: 'Pricing', href: '#pricing' },
   { label: 'FAQ', href: '#faq' },
 ];
@@ -47,6 +50,78 @@ export const features = [
     icon: '🎯',
     title: 'Full Conversation Memory',
     body: 'Remembers everything said so far. Follow-up coaching builds naturally on what came before.',
+  },
+];
+
+export const proofCards = [
+  {
+    kind: 'dock',
+    eyebrow: 'Quiet by design',
+    title: 'A focused workspace that stays out of the way',
+    body: 'Composure keeps your guidance centered and calm, so the session feels premium instead of cluttered.',
+  },
+  {
+    kind: 'activity',
+    eyebrow: 'Light footprint',
+    title: 'Looks polished in use, not busy on screen',
+    body: 'The interface stays compact and restrained, with enough structure to help without overwhelming you.',
+  },
+  {
+    kind: 'code',
+    eyebrow: 'Fast feedback',
+    title: 'Context appears where you need it',
+    body: 'Questions, prompts, and coaching stay readable in a high-contrast layout that feels deliberate.',
+  },
+  {
+    kind: 'meeting',
+    eyebrow: 'Brand polish',
+    title: 'Built to feel like a premium product',
+    body: 'The visual language is confident and minimal, with one accent color and plenty of breathing room.',
+  },
+];
+
+export const comparisonRows = [
+  { feature: 'Supports audio', composure: true, notes: false, browser: false, generic: false },
+  { feature: 'Invisible in dock', composure: true, notes: false, browser: false, generic: false },
+  { feature: 'Invisible to screen share', composure: true, notes: false, browser: true, generic: true },
+  { feature: 'Invisible to tray', composure: true, notes: false, browser: false, generic: false },
+  { feature: 'Invisible to system monitor', composure: true, notes: false, browser: false, generic: false },
+  { feature: 'Click-through undetectability', composure: true, notes: false, browser: false, generic: false },
+  { feature: 'Has real user proof', composure: true, notes: false, browser: false, generic: false },
+  { feature: 'Price', composure: true, notes: false, browser: false, generic: false },
+  { feature: 'Undetectable by browser', composure: true, notes: true, browser: true, generic: true },
+];
+
+export const offerStories = [
+  {
+    brand: 'Cloudflare',
+    metric: '$205k/yr',
+    title: 'Cracked $205k/yr job at Cloudflare with help of interview coder',
+  },
+  {
+    brand: 'Apple',
+    metric: '$234k/yr',
+    title: 'Cracked $234k/yr job at Apple with help of interview coder',
+  },
+  {
+    brand: 'Flipkart',
+    metric: '$85k/yr',
+    title: 'Cracked $85k/yr job at Flipkart with help of interview coder',
+  },
+  {
+    brand: 'Adobe',
+    metric: '$174k/yr',
+    title: 'Cracked $174k/yr job at Adobe with help of interview coder',
+  },
+  {
+    brand: 'Amazon',
+    metric: '$182k/yr',
+    title: 'Cracked $182k/yr job at Amazon with help of interview coder',
+  },
+  {
+    brand: 'Capgemini',
+    metric: '$95k/yr',
+    title: 'Cracked $95k/yr job at Capgemini with help of interview coder',
   },
 ];
 
