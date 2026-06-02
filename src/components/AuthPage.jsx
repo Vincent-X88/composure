@@ -14,11 +14,6 @@ export function AuthPage({ plan, authReady = true, onAuthSuccess }) {
         <section className="auth-hero">
           <p className="eyebrow">Account</p>
           <h1>{isFreePlan ? 'Create your free account' : 'Sign in to continue'}</h1>
-          <p>
-            {isFreePlan
-              ? 'Create your account to start using Composure and unlock the free plan.'
-              : 'Sign in so your purchase stays linked to your account and you can continue securely.'}
-          </p>
         </section>
 
         {!authReady ? (
