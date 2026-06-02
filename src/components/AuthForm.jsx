@@ -171,11 +171,6 @@ export function AuthForm({ planName, mode = 'signup', onSuccess }) {
       </div>
 
       <h2>{isSignup ? 'Create your Composure account' : 'Welcome back'}</h2>
-      <p>
-        {planName
-          ? `Use this account to continue with your ${planName} plan and app access.`
-          : 'Use this account to continue with your purchase and app access.'}
-      </p>
 
       <form className="auth-form" onSubmit={handleSubmit}>
         <label>
