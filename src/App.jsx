@@ -15,6 +15,7 @@ import { LegalPage } from './components/LegalPage';
 import { isSupabaseConfigured, supabase } from './lib/supabase';
 import { loadPricingPlans } from './lib/pricing';
 import { ensureCurrentSubscriptionRow, loadCurrentSubscription } from './lib/account';
+import { consumeDesktopSso } from './lib/desktopSso';
 import { privacyContent, termsContent } from './data/legalContent';
 import {
   downloadUrl,
@@ -51,28 +52,28 @@ function App() {
     {
       title: 'Invisible on dock',
       body: "The app stays active but never shows an icon, so no one can tell it's running.",
-      placeholder: 'Dock image placeholder',
+      image: '/proof-dock.png',
       icon: 'dock',
       badge: 'NEW',
     },
     {
       title: 'Invisible in activity monitor',
-      body: "Runs silently in the background without leaving any trace in your Mac's Activity Monitor.",
-      placeholder: 'Activity Monitor image placeholder',
+      body: 'Runs silently in the background without leaving any trace in your Task Manager.',
+      image: '/proof-activity.png',
       icon: 'activity',
       badge: null,
     },
     {
       title: 'Completely click through',
       body: "Even when you hover or click, your system won't detect Composure. No focus shifts. No flags. No traces.",
-      placeholder: 'Click-through image placeholder',
+      image: '/proof-click.png',
       icon: 'click',
       badge: null,
     },
     {
       title: '100% invisible to screen-recording',
       body: 'Even if the session is recorded, Composure leaves no visible windows or overlays.',
-      placeholder: 'Screen-recording image placeholder',
+      image: '/proof-recording.png',
       icon: 'recording',
       badge: null,
     },
@@ -88,14 +89,20 @@ function App() {
 
     let isMounted = true;
 
-    supabase.auth.getSession().then(({ data }) => {
+    (async () => {
+      // If the desktop app sent us here with a session payload in the URL
+      // fragment, hydrate Supabase with it before reading the current session
+      // so the very first render already sees the signed-in user.
+      await consumeDesktopSso();
+
+      const { data } = await supabase.auth.getSession();
       if (!isMounted) {
         return;
       }
 
       setSession(data.session ?? null);
       setAuthReady(true);
-    });
+    })();
 
     const { data: listener } = supabase.auth.onAuthStateChange((_event, nextSession) => {
       setSession(nextSession);
@@ -204,7 +211,7 @@ function App() {
   if (currentView === 'checkout') {
     return (
       <div className="site-shell">
-          <CheckoutPage
+        <CheckoutPage
           plan={selectedPlan}
           downloadUrl={downloadUrl}
           session={session}
@@ -270,18 +277,18 @@ function App() {
 
   return (
     <div className="site-shell" id="top">
-        <Navbar
-          downloadUrl={downloadUrl}
-          links={navLinks}
-          isOpen={menuOpen}
-          isScrolled={status}
-          onToggle={() => setMenuOpen((current) => !current)}
-          onNavigate={() => setMenuOpen(false)}
-          session={session}
-          subscription={subscription}
-          authReady={authReady}
-          onSignOut={handleSignOut}
-        />
+      <Navbar
+        downloadUrl={downloadUrl}
+        links={navLinks}
+        isOpen={menuOpen}
+        isScrolled={status}
+        onToggle={() => setMenuOpen((current) => !current)}
+        onNavigate={() => setMenuOpen(false)}
+        session={session}
+        subscription={subscription}
+        authReady={authReady}
+        onSignOut={handleSignOut}
+      />
 
       <main>
         <section className="hero section-frame">
@@ -416,9 +423,12 @@ function App() {
                   style={{ transitionDelay: `${index * 70}ms` }}
                 >
                   <div className="proof-matrix-preview" aria-hidden="true">
-                    <div className="proof-matrix-placeholder">
-                      <span>{panel.placeholder}</span>
-                    </div>
+                    <img
+                      className="proof-matrix-image"
+                      src={panel.image}
+                      alt={panel.title}
+                      loading="lazy"
+                    />
                   </div>
 
                   <div className="proof-matrix-copy">
@@ -486,9 +496,12 @@ function App() {
                   style={{ transitionDelay: `${index * 70}ms` }}
                 >
                   <div className="proof-matrix-preview" aria-hidden="true">
-                    <div className="proof-matrix-placeholder">
-                      <span>{panel.placeholder}</span>
-                    </div>
+                    <img
+                      className="proof-matrix-image"
+                      src={panel.image}
+                      alt={panel.title}
+                      loading="lazy"
+                    />
                   </div>
 
                   <div className="proof-matrix-copy">
@@ -681,7 +694,7 @@ function App() {
             ))}
           </div>
 
-          
+
         </section>
 
         <section className="content-section section-inner" id="faq">
