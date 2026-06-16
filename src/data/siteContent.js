@@ -9,7 +9,7 @@ export const navLinks = [
 ];
 
 export const downloadUrl =
-  'https://github.com/Vincent-X88/stealth-desktop/releases/download/interview-assistant/Stealth-AI-setup.exe';
+  'https://github.com/Vincent-X88/stealth-desktop/releases/latest/download/StealthAI-Setup.exe';
 
 export const heroStats = [
   { value: '11,300', label: 'Candidates coached' },
