@@ -5,8 +5,6 @@ import { FeatureCard } from './components/FeatureCard';
 import { StatCard } from './components/StatCard';
 import { PricingCard } from './components/PricingCard';
 import { FAQItem } from './components/FAQItem';
-import { InterviewTypesShowcase } from './components/InterviewTypesShowcase';
-import { OfferStoriesSection } from './components/OfferStoriesSection';
 import { CheckoutPage } from './components/CheckoutPage';
 import { AuthPage } from './components/AuthPage';
 import { CheckoutSuccessPage } from './components/CheckoutSuccessPage';
@@ -628,10 +626,6 @@ function App() {
             </table>
           </div>
         </section>
-
-        <InterviewTypesShowcase />
-
-        <OfferStoriesSection />
 
         <section className="content-section section-inner" id="testimonials">
           <SectionHeading
