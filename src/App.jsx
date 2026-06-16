@@ -11,7 +11,7 @@ import { CheckoutSuccessPage } from './components/CheckoutSuccessPage';
 import { AccountPage } from './components/AccountPage';
 import { LegalPage } from './components/LegalPage';
 import { isSupabaseConfigured, supabase } from './lib/supabase';
-import { applyDisplayCurrency, getDisplayCurrency, loadPricingPlans, setDisplayCurrency } from './lib/pricing';
+import { applyDisplayCurrency, detectDisplayCurrencyAsync, getDisplayCurrency, loadPricingPlans, setDisplayCurrency } from './lib/pricing';
 import { ensureCurrentSubscriptionRow, loadCurrentSubscription } from './lib/account';
 import { consumeDesktopSso } from './lib/desktopSso';
 import { privacyContent, termsContent } from './data/legalContent';
@@ -146,6 +146,29 @@ function App() {
       isMounted = false;
     };
   }, [session]);
+
+  // Refine the auto-detected display currency using IP geolocation. We don't
+  // wait for this to render — the synchronous guess is in place from the
+  // initial state — but if the lookup says the visitor is outside South
+  // Africa we switch to USD (and vice versa). Honours any explicit user
+  // choice via localStorage and never overrides it.
+  useEffect(() => {
+    let isCancelled = false;
+
+    detectDisplayCurrencyAsync()
+      .then((detected) => {
+        if (!isCancelled) {
+          setDisplayCurrencyState(detected);
+        }
+      })
+      .catch(() => {
+        /* Network failure already handled inside the helper */
+      });
+
+    return () => {
+      isCancelled = true;
+    };
+  }, []);
 
   useEffect(() => {
     if (!supabase) {
