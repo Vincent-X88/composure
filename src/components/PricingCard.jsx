@@ -27,8 +27,10 @@ export function PricingCard({ plan, session = null, currentPlanId = 'free', isCu
           {plan.price}
           <sub>/{plan.cadence ?? 'mo'}</sub>
         </div>
-        {plan.displayCurrency === 'USD' && plan.checkoutCurrency === 'ZAR' ? (
-          <p className="pricing-note pricing-note--inline">Charged in ZAR at checkout.</p>
+        {plan.displayCurrency === 'USD' && plan.checkoutCurrency === 'ZAR' && plan.localPrice ? (
+          <p className="pricing-note pricing-note--inline">
+            ≈ {plan.localPrice} · charged in ZAR at checkout
+          </p>
         ) : null}
 
         <ul className="plan-features">

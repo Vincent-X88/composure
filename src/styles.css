@@ -1910,6 +1910,55 @@ img {
   gap: 1.15rem;
 }
 
+.pricing-currency-switch {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.85rem;
+  margin: 0 0 1.35rem;
+  padding: 0.6rem 0.85rem 0.6rem 1.05rem;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.025);
+  font-size: 0.88rem;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.pricing-currency-label strong {
+  color: #ffffff;
+  font-weight: 600;
+}
+
+.pricing-currency-toggle {
+  display: inline-flex;
+  padding: 3px;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.pricing-currency-toggle button {
+  padding: 0.35rem 0.95rem;
+  border-radius: 999px;
+  border: none;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 160ms ease, color 160ms ease;
+}
+
+.pricing-currency-toggle button:hover {
+  color: #ffffff;
+}
+
+.pricing-currency-toggle button.is-active {
+  background: var(--accent, #8ff7c4);
+  color: #08130f;
+}
+
 .testimonial-card {
   padding: 1.75rem 1.55rem;
 }

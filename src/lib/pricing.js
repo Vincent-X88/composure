@@ -1,24 +1,78 @@
 import { supabase } from './supabase';
 
-function isSouthAfricanLocale(locale) {
-  const upperLocale = (locale ?? '').toUpperCase();
-  return upperLocale.includes('-ZA') || upperLocale === 'ZA';
-}
+// Local storage key for the user's explicit currency preference.
+// If unset, we auto-detect from browser locale + timezone.
+const CURRENCY_STORAGE_KEY = 'composure.displayCurrency';
 
-function getVisitorLocale() {
-  if (typeof navigator !== 'undefined' && navigator.language) {
-    return navigator.language;
+const SUPPORTED_DISPLAY_CURRENCIES = ['ZAR', 'USD'];
+
+// Browser locale signals that strongly suggest the visitor is in South Africa.
+function localeLooksSouthAfrican() {
+  if (typeof window === 'undefined') {
+    return false;
   }
 
-  return 'en-ZA';
+  const lang = (navigator.language || '').toUpperCase();
+  if (lang.includes('-ZA') || lang === 'ZA') {
+    return true;
+  }
+
+  // Many SA browsers report en-US for the language but keep their actual
+  // timezone, so we also check for Africa/Johannesburg as a backup signal.
+  try {
+    const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    if (tz === 'Africa/Johannesburg') {
+      return true;
+    }
+  } catch {
+    /* Intl unavailable — ignore */
+  }
+
+  return false;
 }
 
+// Returns the user's explicit choice if they've toggled, otherwise the
+// auto-detected currency. Always returns 'ZAR' or 'USD'.
+export function getDisplayCurrency() {
+  if (typeof window !== 'undefined') {
+    try {
+      const stored = window.localStorage.getItem(CURRENCY_STORAGE_KEY);
+      if (SUPPORTED_DISPLAY_CURRENCIES.includes(stored)) {
+        return stored;
+      }
+    } catch {
+      /* localStorage blocked — ignore */
+    }
+  }
+
+  return localeLooksSouthAfrican() ? 'ZAR' : 'USD';
+}
+
+// Persist a user-chosen currency. Pass `null` to clear it and fall back to
+// auto-detection.
+export function setDisplayCurrency(currency) {
+  if (typeof window === 'undefined') {
+    return;
+  }
+
+  try {
+    if (currency && SUPPORTED_DISPLAY_CURRENCIES.includes(currency)) {
+      window.localStorage.setItem(CURRENCY_STORAGE_KEY, currency);
+    } else {
+      window.localStorage.removeItem(CURRENCY_STORAGE_KEY);
+    }
+  } catch {
+    /* localStorage blocked — ignore */
+  }
+}
+
+// Normalises a `pricing_plans` row into a plan object with both a local (ZAR)
+// and an international (USD) price ready, plus the actual checkout currency
+// Paystack will charge in. Display-time formatting is done by
+// `applyDisplayCurrency` so we can react to user toggles without re-fetching.
 function normalizePricingPlan(row) {
-  const locale = getVisitorLocale();
-  const displayCurrency = isSouthAfricanLocale(locale) ? 'ZAR' : 'USD';
-  const price = displayCurrency === 'ZAR'
-    ? row.price_display
-    : row.international_price_display ?? row.price_display;
+  const localPrice = row.price_display;
+  const internationalPrice = row.international_price_display ?? row.price_display;
 
   return {
     id: row.id,
@@ -29,17 +83,33 @@ function normalizePricingPlan(row) {
     currency: row.currency,
     billingType: row.billing_type,
     paystackPlanCode: row.paystack_plan_code,
-    price,
-    displayCurrency,
-    checkoutCurrency: row.currency,
-    localPrice: row.price_display,
-    internationalPrice: row.international_price_display ?? row.price_display,
     cadence: row.cadence,
     checkoutPath: row.checkout_path,
     badge: row.badge,
     featured: row.featured,
     features: Array.isArray(row.features) ? row.features : [],
+
+    // Currency-aware fields. `price` and `displayCurrency` are filled in by
+    // applyDisplayCurrency() so the rest of the UI doesn't have to think
+    // about it.
+    localPrice,
+    internationalPrice,
+    checkoutCurrency: row.currency,
+    price: localPrice,
+    displayCurrency: row.currency,
   };
+}
+
+// Given a list of normalised plans and the chosen display currency, returns a
+// new list where each plan has its `price` and `displayCurrency` set to match.
+// Pure function — safe to call on every render or whenever the user toggles.
+export function applyDisplayCurrency(plans, currency) {
+  const target = SUPPORTED_DISPLAY_CURRENCIES.includes(currency) ? currency : 'ZAR';
+
+  return plans.map((plan) => {
+    const price = target === 'ZAR' ? plan.localPrice : plan.internationalPrice;
+    return { ...plan, price, displayCurrency: target };
+  });
 }
 
 export async function loadPricingPlans() {

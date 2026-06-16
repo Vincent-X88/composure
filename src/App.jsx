@@ -11,7 +11,7 @@ import { CheckoutSuccessPage } from './components/CheckoutSuccessPage';
 import { AccountPage } from './components/AccountPage';
 import { LegalPage } from './components/LegalPage';
 import { isSupabaseConfigured, supabase } from './lib/supabase';
-import { loadPricingPlans } from './lib/pricing';
+import { applyDisplayCurrency, getDisplayCurrency, loadPricingPlans, setDisplayCurrency } from './lib/pricing';
 import { ensureCurrentSubscriptionRow, loadCurrentSubscription } from './lib/account';
 import { consumeDesktopSso } from './lib/desktopSso';
 import { privacyContent, termsContent } from './data/legalContent';
@@ -36,7 +36,14 @@ function App() {
   const [session, setSession] = useState(null);
   const [subscription, setSubscription] = useState(null);
   const [authReady, setAuthReady] = useState(!isSupabaseConfigured);
-  const [pricingPlans, setPricingPlans] = useState(fallbackPricingPlans);
+  const [rawPricingPlans, setRawPricingPlans] = useState(fallbackPricingPlans);
+  const [displayCurrency, setDisplayCurrencyState] = useState(() => getDisplayCurrency());
+  const pricingPlans = applyDisplayCurrency(rawPricingPlans, displayCurrency);
+
+  function changeDisplayCurrency(nextCurrency) {
+    setDisplayCurrency(nextCurrency);
+    setDisplayCurrencyState(nextCurrency);
+  }
 
   const searchParams = new URLSearchParams(window.location.search);
   const currentView = searchParams.get('view');
@@ -150,12 +157,12 @@ function App() {
     loadPricingPlans()
       .then((plans) => {
         if (isMounted && plans.length > 0) {
-          setPricingPlans(plans);
+          setRawPricingPlans(plans);
         }
       })
       .catch(() => {
         if (isMounted) {
-          setPricingPlans(fallbackPricingPlans);
+          setRawPricingPlans(fallbackPricingPlans);
         }
       });
 
@@ -674,6 +681,30 @@ function App() {
             title="Invest in your career"
             body="One successful interview pays for the entire plan many times over."
           />
+
+          <div className="pricing-currency-switch" role="group" aria-label="Display currency">
+            <span className="pricing-currency-label">
+              Showing prices in <strong>{displayCurrency}</strong>
+            </span>
+            <div className="pricing-currency-toggle">
+              <button
+                type="button"
+                className={displayCurrency === 'ZAR' ? 'is-active' : ''}
+                aria-pressed={displayCurrency === 'ZAR'}
+                onClick={() => changeDisplayCurrency('ZAR')}
+              >
+                ZAR (R)
+              </button>
+              <button
+                type="button"
+                className={displayCurrency === 'USD' ? 'is-active' : ''}
+                aria-pressed={displayCurrency === 'USD'}
+                onClick={() => changeDisplayCurrency('USD')}
+              >
+                USD ($)
+              </button>
+            </div>
+          </div>
 
           <div className="pricing-grid">
             {pricingPlans.map((plan, index) => (

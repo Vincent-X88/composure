@@ -143,8 +143,11 @@ export function CheckoutPage({
                 {plan.price}
                 <sub>/{plan.cadence ?? 'mo'}</sub>
               </div>
-              {plan.displayCurrency === 'USD' && plan.checkoutCurrency === 'ZAR' ? (
-                <p className="pricing-note pricing-note--inline">Charged in ZAR at checkout.</p>
+              {plan.displayCurrency === 'USD' && plan.checkoutCurrency === 'ZAR' && plan.localPrice ? (
+                <p className="pricing-note pricing-note--inline">
+                  Your card will be charged <strong>{plan.localPrice}</strong> in ZAR. Your bank
+                  handles the conversion at checkout.
+                </p>
               ) : null}
               <p className="summary-description">{plan.description}</p>
               <ul className="summary-features">
